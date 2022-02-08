@@ -54,4 +54,8 @@ import { makeAutoObservable, runInAction } from "mobx";
              throw error;
          }
      }
+
+     setImage = (image: string) => {
+        if (this.user) this.user.image = image;
+    } 
  } 

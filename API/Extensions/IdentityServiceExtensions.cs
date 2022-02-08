@@ -3,8 +3,10 @@ using API.Services;
 //using API.Services;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.Security;
  using Microsoft.Extensions.Configuration;
  using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -38,9 +40,20 @@ using Persistence;
                          ValidateAudience = false
                      };
                  });
-             services.AddScoped<TokenService>();
+            
 
-             services.AddAuthentication();
+             services.AddAuthorization(opt =>
+             {
+                 opt.AddPolicy("IsActivityHost", policy =>
+                 {
+                     policy.Requirements.Add(new IsHostRequirement());
+                 });
+             });
+             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
+            services.AddScoped<TokenService>();
+
+            //services.AddAuthentication();
 
              return services;
          }
