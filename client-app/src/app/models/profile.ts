@@ -4,6 +4,9 @@ import { User } from "./user";
      username: string;
      displayName: string;
      image?: string;
+     followersCount: number;
+     followingCount: number;
+     following: boolean;
      bio?: string;
      photos?: Photo[];
  }
